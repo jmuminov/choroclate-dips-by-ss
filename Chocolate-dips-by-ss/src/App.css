@@ -1,0 +1,27 @@
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #4b2e83; /* Dark purple */
+  padding: 1rem;
+  color: white;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #ffcc00; /* Gold */
+  transform: scale(1.1);
+}
+
+.nav-link:active {
+  color: #d4af37; /* Darker gold */
+}
