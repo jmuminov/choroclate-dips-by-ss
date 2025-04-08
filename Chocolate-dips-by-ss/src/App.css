@@ -1,12 +1,59 @@
+/* General container styling */
+.app-container {
+  font-family: Arial, sans-serif;
+  width: 100%; /* Ensure the container spans the full width of the page */
+  margin: 0; /* Remove auto-centering */
+  padding: 20px;
+  box-sizing: border-box; /* Include padding in the width calculation */
+}
+
+/* Center the Home component content */
+.home-container {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center horizontally */
+  justify-content: flex-start; /* Align to the top */
+  text-align: center; /* Center text */
+  height: 100vh; /* Full viewport height */
+  padding-top: 2rem; /* Add some space at the top */
+  box-sizing: border-box; /* Include padding in height calculation */
+}
+
+/* Header styling */
+header {
+  display: flex;
+  flex-direction: column; /* Stack the <h1> and navbar vertically */
+  align-items: flex-start; /* Align items to the left */
+  width: 100%; /* Ensure the header spans the full width */
+  margin-bottom: 1rem;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin: 0;
+  color: #4b2e83; /* Dark purple */
+  align-self: flex-start; /* Ensure <h1> aligns to the left */
+}
+
+/* Navbar styling */
 .navbar {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between; /* Space between left and right sections */
   align-items: center;
+  width: 100%; /* Make navbar span across the page */
   background-color: #4b2e83; /* Dark purple */
   padding: 1rem;
   color: white;
-  font-family: Arial, sans-serif;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links-left {
+  display: flex;
+  gap: 1rem; /* Add spacing between links */
+}
+
+.nav-links-right {
+  display: flex;
 }
 
 .nav-link {
