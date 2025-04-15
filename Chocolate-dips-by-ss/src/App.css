@@ -1,3 +1,6 @@
+@import "/node_modules/slick-carousel/slick/slick.css";
+@import "/node_modules/slick-carousel/slick/slick-theme.css";
+
 /* General container styling */
 .app-container {
   font-family: Arial, sans-serif;
@@ -53,6 +56,7 @@ header h1 {
 }
 
 .nav-links-right {
+  margin-right: 1rem;
   display: flex;
 }
 
@@ -71,4 +75,381 @@ header h1 {
 
 .nav-link:active {
   color: #d4af37; /* Darker gold */
+}
+
+/* Menu container styling */
+.menu-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+  gap: 1.5rem; /* Space between items */
+  padding: 2rem;
+  justify-items: center; /* Center items horizontally */
+}
+
+/* Individual menu item styling */
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 200px; /* Fixed width */
+  height: 300px; /* Fixed height */
+}
+
+/* Menu item image styling */
+.menu-item-image {
+  width: 100%;
+  height: 150px; /* Fixed height for images */
+  object-fit: cover; /* Ensures the image fills the frame while maintaining aspect ratio */
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* Menu item name styling */
+.menu-item-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0.5rem 0;
+}
+
+/* Menu item price styling */
+.menu-item-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4b2e83; /* Dark purple */
+  margin-bottom: 0.5rem;
+}
+
+/* Add to Cart button styling */
+.menu-item-button {
+  background-color: #4b2e83; /* Dark purple */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.menu-item-button:hover {
+  background-color: #ffcc00; /* Gold */
+}
+
+/* Contact container styling */
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+/* Contact title styling */
+.contact-container h2 {
+  font-size: 2rem;
+  color: #4b2e83; /* Dark purple */
+  margin-bottom: 1.5rem;
+}
+
+/* Contact content layout */
+.contact-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Align items vertically */
+  gap: 2rem;
+  width: 100%;
+}
+
+/* Contact form styling */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  gap: 1rem;
+}
+
+.contact-form label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #4b2e83; /* Dark purple */
+  text-align: left;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #4b2e83; /* Dark purple */
+  outline: none;
+}
+
+.contact-form textarea {
+  resize: none; /* Prevent resizing */
+}
+
+/* Submit button styling */
+.contact-submit-button {
+  background-color: #4b2e83; /* Dark purple */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.contact-submit-button:hover {
+  background-color: #ffcc00; /* Gold */
+}
+
+/* Instagram section styling */
+.contact-instagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 30%;
+  margin-top: auto; /* Align with the bottom of the form */
+}
+
+.contact-instagram p {
+  font-size: 1rem;
+  color: #4b2e83; /* Dark purple */
+  margin-bottom: 1rem;
+}
+
+.instagram-logo {
+  width: 150px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.instagram-logo:hover {
+  transform: scale(1.1);
+}
+
+/* About container styling */
+.about-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.about-container h2 {
+  font-size: 2rem;
+  color: #4b2e83; /* Dark purple */
+  margin-bottom: 1rem;
+}
+
+.about-container p {
+  font-size: 1.2rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Slideshow container styling */
+.slideshow-container {
+  margin-top: 2rem;
+  width: 80%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative; /* Required for positioning arrows */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Slideshow image styling */
+.slideshow-image {
+  width: 100%;
+  height: 700px; /* Set a fixed height for the images */
+  object-fit: contain; /* Ensures the entire image fits within the frame */
+  display: block;
+  margin: 0 auto; /* Center the image horizontally */
+  border-radius: 8px;
+}
+
+/* Slider arrow styling */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.slider-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.prev-arrow {
+  left: 10px; /* Position the left arrow */
+}
+
+.next-arrow {
+  right: 10px; /* Position the right arrow */
+}
+
+/* Cart container styling */
+.cart-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+/* Header styling */
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.cart-header h2 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.cart-header h3 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Divider */
+hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 1rem 0;
+}
+
+/* Cart item styling */
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.cart-item-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-item-details {
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.cart-item-name {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.cart-item-quantity {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.cart-item-quantity label {
+  margin-right: 0.5rem;
+}
+
+.cart-item-input {
+  width: 50px;
+  padding: 0.25rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.cart-item-remove {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.cart-item-remove:hover {
+  background-color: #e60000;
+}
+
+.cart-item-price {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin-left: 1rem;
+}
+
+/* Total price and checkout button */
+.cart-total {
+  text-align: right;
+  margin-top: 1rem;
+}
+
+.cart-total h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.checkout-button {
+  background-color: #4b2e83; /* Dark purple */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.checkout-button:hover {
+  background-color: #ffcc00; /* Gold */
 }
