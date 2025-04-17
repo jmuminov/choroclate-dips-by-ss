@@ -340,6 +340,19 @@ header h1 {
   font-family: Arial, sans-serif;
 }
 
+.cart-count {
+  background-color: #ffcc00;
+  color: #4b2e83;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-left: 5px;
+  display: inline-block;
+  min-width: 20px;
+  text-align: center;
+}
+
 /* Header styling */
 .cart-header {
   display: flex;
@@ -452,4 +465,115 @@ hr {
 
 .checkout-button:hover {
   background-color: #ffcc00; /* Gold */
+}
+
+/* Authentication container styling */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 2rem auto;
+}
+
+.auth-container h2 {
+  font-size: 2rem;
+  color: #4b2e83;
+  margin-bottom: 1.5rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.form-group label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #4b2e83;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  border-color: #4b2e83;
+  outline: none;
+}
+
+.auth-button {
+  background-color: #4b2e83;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.auth-button:hover {
+  background-color: #ffcc00;
+}
+
+.auth-link {
+  margin-top: 1rem;
+  color: #4b2e83;
+}
+
+.auth-link a {
+  color: #4b2e83;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-link a:hover {
+  color: #ffcc00;
+}
+
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  text-align: center;
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: white;
+  padding: 0;
+  margin-right: 1rem;
+}
+
+.logout-button:hover {
+  color: #ffcc00;
 }

@@ -42,6 +42,15 @@ async function seed() {
         );
       `);
 
+      // Insert sample products
+    await db.query(`
+      INSERT INTO products (name, price, description, image) VALUES
+      ('Chocolate Strawberry', 5.99, 'Fresh strawberries dipped in chocolate', '/images/strawberry.jpg'),
+      ('Chocolate Banana', 4.99, 'Banana slices covered in chocolate', '/images/banana.jpg'),
+      ('Chocolate Pretzel', 3.99, 'Crunchy pretzels dipped in chocolate', '/images/pretzel.jpg'),
+      ('Chocolate Marshmallow', 2.99, 'Fluffy marshmallows covered in chocolate', '/images/marshmallow.jpg');
+    `);
+
     console.log("Database is seeded.");
   } catch (err) {
     console.error(err);
