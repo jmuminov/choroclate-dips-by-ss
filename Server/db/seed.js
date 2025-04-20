@@ -15,7 +15,8 @@ async function seed() {
         );
         CREATE TABLE user_info (
           id SERIAL PRIMARY KEY,
-          fullname TEXT NOT NULL,
+          firstname TEXT NOT NULL,
+          lastname TEXT NOT NULL,
           email TEXT NOT NULL,
           user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
         );
@@ -30,7 +31,7 @@ async function seed() {
           id SERIAL PRIMARY KEY,
           product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
           quantity INTEGER NOT NULL DEFAULT 1,
-          user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
         );
         CREATE TABLE orders (
           id SERIAL PRIMARY KEY,
@@ -56,3 +57,5 @@ async function seed() {
     console.error(err);
   }
 }
+
+module.exports = { seed };

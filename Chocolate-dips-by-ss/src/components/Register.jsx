@@ -3,7 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function Register() {
-  const [fullname, setFullname] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -33,7 +34,7 @@ export default function Register() {
       return;
     }
 
-    const result = await register(fullname, email, password);
+    const result = await register(firstname, lastname, email, password);
     if (result.success) {
       navigate('/');
     } else {
@@ -47,12 +48,22 @@ export default function Register() {
       {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit} className="auth-form">
         <div className="form-group">
-          <label htmlFor="fullname">Full Name</label>
+          <label htmlFor="firstname">First Name</label>
           <input
             type="text"
-            id="fullname"
-            value={fullname}
-            onChange={(e) => setFullname(e.target.value)}
+            id="firstname"
+            value={firstname}
+            onChange={(e) => setFirstname(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="lastname">Last Name</label>
+          <input
+            type="text"
+            id="lastname"
+            value={lastname}
+            onChange={(e) => setLastname(e.target.value)}
             required
           />
         </div>

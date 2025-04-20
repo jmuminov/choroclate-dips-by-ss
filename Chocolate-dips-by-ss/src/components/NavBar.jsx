@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
 import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
 
 export default function NavBar() {
   const { cartItems } = useCart();
   const { user, logout } = useAuth();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
     <nav className="navbar">
@@ -13,15 +15,27 @@ export default function NavBar() {
         <Link to="/menu" className="nav-link">Menu</Link>
         <Link to="/about" className="nav-link">About</Link>
         <Link to="/contact" className="nav-link">Contact</Link>
-        {!user && <Link to="/login" className="nav-link">Login</Link>}
       </div>
       <div className="nav-links-right">
         {user ? (
-          <>
-            <span className="nav-link">Welcome, {user.fullname}</span>
-            <button onClick={logout} className="nav-link logout-button">Logout</button>
-          </>
-        ) : null}
+          <div 
+            className="user-dropdown"
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
+            <span className="nav-link user-welcome">
+              Welcome, {user.firstname}
+              <span className="dropdown-indicator">▼</span>
+            </span>
+            {isDropdownOpen && (
+              <div className="dropdown-menu">
+                <button onClick={logout} className="dropdown-item">Logout</button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <Link to="/login" className="nav-link user-welcome">Login</Link>
+        )}
         <Link to="/cart" className="nav-link">
           Cart
           <span className="cart-count">{cartItems.length}</span>

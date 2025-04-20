@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
 
     // Create user
     const userResult = await db.query(
-      "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *",
+      "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id",
       [email, hashedPassword]
     );
 
@@ -49,8 +49,8 @@ router.post("/register", async (req, res) => {
       user: { id: userId, email, fullname }
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    console.error("Registration error:", err);
+    res.status(500).json({ message: "Server error during registration" });
   }
 });
 
@@ -101,8 +101,8 @@ router.post("/login", async (req, res) => {
       }
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    console.error("Login error:", err);
+    res.status(500).json({ message: "Server error during login" });
   }
 });
 
@@ -137,7 +137,7 @@ router.get("/verify", async (req, res) => {
       }
     });
   } catch (err) {
-    console.error(err);
+    console.error("Token verification error:", err);
     res.status(401).json({ message: "Invalid token" });
   }
 });
