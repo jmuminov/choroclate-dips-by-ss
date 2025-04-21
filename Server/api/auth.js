@@ -7,7 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"; // In production
 
 // Register a new user
 router.post("/register", async (req, res) => {
-  const { fullname, email, password } = req.body;
+  const { firstname, lastname, email, password } = req.body;
 
   try {
     // Check if user already exists
@@ -33,20 +33,20 @@ router.post("/register", async (req, res) => {
 
     // Create user info
     await db.query(
-      "INSERT INTO user_info (fullname, email, user_id) VALUES ($1, $2, $3)",
-      [fullname, email, userId]
+      "INSERT INTO user_info (firstname, lastname, email, user_id) VALUES ($1, $2, $3, $4)",
+      [firstname, lastname, email, userId]
     );
 
     // Generate JWT token
     const token = jwt.sign(
-      { userId, email, fullname },
+      { userId, email, firstname, lastname },
       JWT_SECRET,
       { expiresIn: "30m" }
     );
 
     res.status(201).json({
       token,
-      user: { id: userId, email, fullname }
+      user: { id: userId, email, firstname, lastname }
     });
   } catch (err) {
     console.error("Registration error:", err);
@@ -87,7 +87,12 @@ router.post("/login", async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign(
-      { userId: user.id, email: user.username, fullname: userInfo.fullname },
+      { 
+        userId: user.id, 
+        email: user.username, 
+        firstname: userInfo.firstname,
+        lastname: userInfo.lastname 
+      },
       JWT_SECRET,
       { expiresIn: "30m" }
     );
@@ -97,7 +102,8 @@ router.post("/login", async (req, res) => {
       user: {
         id: user.id,
         email: user.username,
-        fullname: userInfo.fullname
+        firstname: userInfo.firstname,
+        lastname: userInfo.lastname
       }
     });
   } catch (err) {
@@ -133,7 +139,8 @@ router.get("/verify", async (req, res) => {
       user: {
         id: decoded.userId,
         email: decoded.email,
-        fullname: userInfo.fullname
+        firstname: userInfo.firstname,
+        lastname: userInfo.lastname
       }
     });
   } catch (err) {

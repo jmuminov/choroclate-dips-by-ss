@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import { getGuestCart, saveGuestCart, clearGuestCart } from '../utils/guestCart';
 
 export const CartContext = createContext(null);
 
@@ -8,12 +9,14 @@ export function CartProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
-  // Fetch cart items when user logs in
+  // Initialize cart based on user state
   useEffect(() => {
     if (user) {
       fetchCartItems();
     } else {
-      setCartItems([]);
+      // Load guest cart
+      const guestCart = getGuestCart();
+      setCartItems(guestCart);
       setLoading(false);
     }
   }, [user]);
@@ -28,8 +31,31 @@ export function CartProvider({ children }) {
       });
       
       if (response.ok) {
-        const data = await response.json();
-        setCartItems(data);
+        const cartData = await response.json();
+        
+        // Fetch product details for each cart item
+        const cartItemsWithProducts = await Promise.all(
+          cartData.map(async (item) => {
+            const productResponse = await fetch(`/api/products/${item.product_id}`, {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+            
+            if (productResponse.ok) {
+              const product = await productResponse.json();
+              return {
+                ...item,
+                name: product.name,
+                price: product.price,
+                image: product.image
+              };
+            }
+            return item;
+          })
+        );
+        
+        setCartItems(cartItemsWithProducts);
       }
     } catch (error) {
       console.error('Error fetching cart items:', error);
@@ -39,33 +65,65 @@ export function CartProvider({ children }) {
   };
 
   const addToCart = async (productId, quantity = 1) => {
-    if (!user) {
-      // Redirect to login or show login prompt
-      return { success: false, message: 'Please login to add items to cart' };
-    }
-
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/cart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          product_id: productId,
-          quantity,
-          user_id: user.id
-        })
-      });
+      if (user) {
+        // Add to user's cart in database
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/cart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            product_id: productId,
+            quantity,
+            user_id: user.id
+          })
+        });
 
-      if (response.ok) {
-        const newItem = await response.json();
-        setCartItems([...cartItems, newItem]);
-        return { success: true };
+        if (response.ok) {
+          const newItem = await response.json();
+          
+          // Fetch product details for the new cart item
+          const productResponse = await fetch(`/api/products/${productId}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          
+          if (productResponse.ok) {
+            const product = await productResponse.json();
+            const cartItemWithProduct = {
+              ...newItem,
+              name: product.name,
+              price: product.price,
+              image: product.image
+            };
+            
+            setCartItems([...cartItems, cartItemWithProduct]);
+            return { success: true };
+          }
+        }
       } else {
-        const error = await response.json();
-        return { success: false, message: error.message };
+        // Add to guest cart
+        const productResponse = await fetch(`/api/products/${productId}`);
+        if (productResponse.ok) {
+          const product = await productResponse.json();
+          const newItem = {
+            id: `guest-${Date.now()}`,
+            product_id: productId,
+            quantity,
+            name: product.name,
+            price: product.price,
+            image: product.image
+          };
+          
+          const updatedCart = [...cartItems, newItem];
+          setCartItems(updatedCart);
+          saveGuestCart(updatedCart);
+          return { success: true };
+        }
       }
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -74,28 +132,42 @@ export function CartProvider({ children }) {
   };
 
   const updateCartItem = async (cartItemId, quantity) => {
-    if (!user) return { success: false, message: 'Please login to update cart' };
-
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/cart/${cartItemId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ quantity })
-      });
+      if (user) {
+        // Update user's cart in database
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/cart/${cartItemId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ quantity })
+        });
 
-      if (response.ok) {
-        const updatedItem = await response.json();
-        setCartItems(cartItems.map(item => 
-          item.id === cartItemId ? updatedItem : item
-        ));
-        return { success: true };
+        if (response.ok) {
+          const updatedItem = await response.json();
+          const existingItem = cartItems.find(item => item.id === cartItemId);
+          const updatedItemWithProduct = {
+            ...updatedItem,
+            name: existingItem.name,
+            price: existingItem.price,
+            image: existingItem.image
+          };
+          
+          setCartItems(cartItems.map(item => 
+            item.id === cartItemId ? updatedItemWithProduct : item
+          ));
+          return { success: true };
+        }
       } else {
-        const error = await response.json();
-        return { success: false, message: error.message };
+        // Update guest cart
+        const updatedCart = cartItems.map(item => 
+          item.id === cartItemId ? { ...item, quantity } : item
+        );
+        setCartItems(updatedCart);
+        saveGuestCart(updatedCart);
+        return { success: true };
       }
     } catch (error) {
       console.error('Error updating cart item:', error);
@@ -104,23 +176,27 @@ export function CartProvider({ children }) {
   };
 
   const removeFromCart = async (cartItemId) => {
-    if (!user) return { success: false, message: 'Please login to remove from cart' };
-
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/cart/${cartItemId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      if (user) {
+        // Remove from user's cart in database
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/cart/${cartItemId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
 
-      if (response.ok) {
-        setCartItems(cartItems.filter(item => item.id !== cartItemId));
-        return { success: true };
+        if (response.ok) {
+          setCartItems(cartItems.filter(item => item.id !== cartItemId));
+          return { success: true };
+        }
       } else {
-        const error = await response.json();
-        return { success: false, message: error.message };
+        // Remove from guest cart
+        const updatedCart = cartItems.filter(item => item.id !== cartItemId);
+        setCartItems(updatedCart);
+        saveGuestCart(updatedCart);
+        return { success: true };
       }
     } catch (error) {
       console.error('Error removing from cart:', error);
@@ -130,6 +206,43 @@ export function CartProvider({ children }) {
 
   const clearCart = () => {
     setCartItems([]);
+    if (!user) {
+      clearGuestCart();
+    }
+  };
+
+  // Function to merge guest cart with user cart
+  const mergeGuestCartWithUser = async (userId) => {
+    if (!userId) return;
+
+    const guestCart = getGuestCart();
+    if (guestCart.length === 0) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      
+      // Add each guest cart item to the user's cart
+      for (const item of guestCart) {
+        await fetch('/api/cart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            product_id: item.product_id,
+            quantity: item.quantity,
+            user_id: userId
+          })
+        });
+      }
+
+      // Clear guest cart and fetch updated user cart
+      clearGuestCart();
+      await fetchCartItems();
+    } catch (error) {
+      console.error('Error merging guest cart with user cart:', error);
+    }
   };
 
   return (
@@ -140,7 +253,8 @@ export function CartProvider({ children }) {
       updateCartItem, 
       removeFromCart,
       fetchCartItems,
-      clearCart
+      clearCart,
+      mergeGuestCartWithUser
     }}>
       {children}
     </CartContext.Provider>

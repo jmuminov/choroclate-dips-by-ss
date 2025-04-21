@@ -411,18 +411,22 @@ hr {
 .cart-item-quantity {
   display: flex;
   align-items: center;
-  margin-bottom: 0.5rem;
+  justify-content: center;
+  margin: 10px 0;
+  gap: 10px;
 }
 
 .cart-item-quantity label {
-  margin-right: 0.5rem;
+  font-size: 0.9rem;
+  color: #333;
 }
 
-.cart-item-input {
+.cart-item-quantity-input {
   width: 50px;
-  padding: 0.25rem;
+  padding: 5px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  text-align: center;
 }
 
 .cart-item-remove {
@@ -633,4 +637,35 @@ hr {
 
 .user-dropdown:hover .dropdown-indicator {
   transform: rotate(180deg);
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: #dc3545;
+}
+
+.menu-item-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  gap: 10px;
+}
+
+.menu-item-quantity label {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.menu-item-quantity-input {
+  width: 50px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
 }
