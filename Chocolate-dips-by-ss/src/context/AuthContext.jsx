@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
 
   const validateToken = async (token) => {
     try {
-      const response = await fetch('/api/auth/validate', {
+      const response = await fetch(`${API_URL}/api/auth/verify`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -44,7 +44,7 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -67,14 +67,14 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const register = async (userData) => {
+  const register = async (firstname, lastname, email, password) => {
     try {
-      const response = await fetch('/api/auth/register', {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData)
+        body: JSON.stringify({ firstname, lastname, email, password })
       });
 
       if (response.ok) {

@@ -1,7 +1,9 @@
-import { useCart } from "../hooks/useCart";
+import { useCart } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
   const { cartItems, updateCartItem, removeFromCart } = useCart();
+  const navigate = useNavigate();
 
   // Calculate total price
   const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -10,6 +12,10 @@ export default function Cart() {
     if (newQuantity >= 1) {
       updateCartItem(itemId, newQuantity);
     }
+  };
+
+  const handleCheckout = () => {
+    navigate('/checkout');
   };
 
   return (
@@ -60,15 +66,20 @@ export default function Cart() {
       <hr />
 
       {/* Total Price and Checkout */}
-      <div className="cart-total">
-        <h3>Total: ${totalPrice.toFixed(2)}</h3>
-        <button 
-          className="checkout-button"
-          disabled={cartItems.length === 0}
-        >
-          Proceed to Checkout
-        </button>
-      </div>
+      {cartItems.length > 0 && (
+        <div className="cart-footer">
+          <div className="cart-total">
+            <span>Total:</span>
+            <span>${totalPrice.toFixed(2)}</span>
+          </div>
+          <button 
+            className="checkout-button"
+            onClick={handleCheckout}
+          >
+            Proceed to Checkout
+          </button>
+        </div>
+      )}
     </div>
   );
 }

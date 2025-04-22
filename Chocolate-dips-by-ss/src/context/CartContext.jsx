@@ -66,6 +66,14 @@ export function CartProvider({ children }) {
 
   const addToCart = async (productId, quantity = 1) => {
     try {
+      // Check if item already exists in cart
+      const existingItem = cartItems.find(item => item.product_id === productId);
+      
+      if (existingItem) {
+        // If item exists, update its quantity
+        return await updateCartItem(existingItem.id, existingItem.quantity + quantity);
+      }
+
       if (user) {
         // Add to user's cart in database
         const token = localStorage.getItem('token');
