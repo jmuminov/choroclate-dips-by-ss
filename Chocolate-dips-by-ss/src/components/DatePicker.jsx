@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { getAvailableDates } from '../services/unavailableDatesService';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import '../styles/Checkout.css';
 
-const DatePicker = ({ onSelect }) => {
-  const [selectedDate, setSelectedDate] = useState('');
-  const [availableDates, setAvailableDates] = useState([]);
+const DatePickerComponent = ({ onSelect, onNext }) => {
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [unavailableDates, setUnavailableDates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -11,9 +14,29 @@ const DatePicker = ({ onSelect }) => {
     const fetchAvailableDates = async () => {
       try {
         const dates = await getAvailableDates();
-        setAvailableDates(dates);
+        // Convert available dates to a Set for faster lookup
+        const availableDatesSet = new Set(dates);
+        
+        // Generate all dates for next 60 days
+        const today = new Date();
+        const sixtyDaysFromNow = new Date();
+        sixtyDaysFromNow.setDate(today.getDate() + 60);
+        
+        const allDates = [];
+        let currentDate = new Date(today);
+        
+        while (currentDate <= sixtyDaysFromNow) {
+          const dateStr = currentDate.toISOString().split('T')[0];
+          if (!availableDatesSet.has(dateStr)) {
+            allDates.push(new Date(currentDate));
+          }
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+        
+        setUnavailableDates(allDates);
         setLoading(false);
       } catch (err) {
+        console.error('Error in fetchAvailableDates:', err);
         setError(err.message);
         setLoading(false);
       }
@@ -22,10 +45,27 @@ const DatePicker = ({ onSelect }) => {
     fetchAvailableDates();
   }, []);
 
-  const handleDateChange = (e) => {
-    const date = e.target.value;
+  const handleDateChange = (date) => {
+    if (!date) return;
     setSelectedDate(date);
-    onSelect(date);
+    setError(null);
+  };
+
+  const handleNext = () => {
+    if (!selectedDate) {
+      setError('Please select a date before proceeding');
+      return;
+    }
+    setError(null);
+    onSelect(selectedDate.toISOString().split('T')[0]);
+    onNext();
+  };
+
+  const isDateUnavailable = (date) => {
+    if (!date) return false;
+    return unavailableDates.some(unavailableDate => 
+      date.toDateString() === unavailableDate.toDateString()
+    );
   };
 
   if (loading) return <div>Loading available dates...</div>;
@@ -35,22 +75,35 @@ const DatePicker = ({ onSelect }) => {
     <div className="date-picker-form">
       <div className="form-group">
         <label htmlFor="date">Select Date:</label>
-        <select
+        <DatePicker
           id="date"
-          value={selectedDate}
+          selected={selectedDate}
           onChange={handleDateChange}
+          filterDate={date => !isDateUnavailable(date)}
+          minDate={new Date()}
+          maxDate={new Date(new Date().setDate(new Date().getDate() + 60))}
+          dateFormat="MMMM d, yyyy"
+          className="date-picker-input"
+          placeholderText="Select a date"
           required
+          autoComplete="off"
+        />
+      </div>
+      <div className="error-container">
+        {error && <div className="error-message" role="alert">{error}</div>}
+      </div>
+      <div className="form-group">
+        <button 
+          onClick={handleNext}
+          className={`add-button ${!selectedDate ? 'disabled' : ''}`}
+          disabled={!selectedDate}
+          title={!selectedDate ? "Please select a date" : ""}
         >
-          <option value="">Select a date</option>
-          {availableDates.map((date) => (
-            <option key={date} value={date}>
-              {new Date(date).toLocaleDateString()}
-            </option>
-          ))}
-        </select>
+          Next
+        </button>
       </div>
     </div>
   );
 };
 
-export default DatePicker; 
+export default DatePickerComponent; 

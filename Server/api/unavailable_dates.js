@@ -13,13 +13,24 @@ const isAdmin = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // Add your admin check logic here
-    // For now, we'll just proceed
+    if (!decoded.isAdmin) {
+      return res.status(403).json({ message: 'Access denied. Admin privileges required.' });
+    }
+    req.user = decoded;
     next();
   } catch (err) {
     return res.status(401).json({ message: 'Invalid token' });
   }
 };
+
+// Apply admin middleware to all routes except /available
+router.use((req, res, next) => {
+  if (req.path === '/available') {
+    next();
+  } else {
+    isAdmin(req, res, next);
+  }
+});
 
 // Get all unavailable dates
 router.get('/', async (req, res) => {
@@ -33,7 +44,7 @@ router.get('/', async (req, res) => {
 });
 
 // Add new unavailable date(s)
-router.post('/', isAdmin, async (req, res) => {
+router.post('/', async (req, res) => {
   const { date, is_range, end_date } = req.body;
 
   try {
@@ -54,7 +65,7 @@ router.post('/', isAdmin, async (req, res) => {
 });
 
 // Delete unavailable date
-router.delete('/:id', isAdmin, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -71,20 +82,20 @@ router.delete('/:id', isAdmin, async (req, res) => {
   }
 });
 
-// Get available dates for next 30 days
+// Get available dates for next 60 days
 router.get('/available', async (req, res) => {
   try {
     const today = new Date();
-    const thirtyDaysFromNow = addDays(today, 30);
+    const sixtyDaysFromNow = addDays(today, 60);
 
     // Get all unavailable dates
     const unavailableResult = await db.query('SELECT * FROM unavailable_dates');
     const unavailableDates = unavailableResult.rows;
 
-    // Generate all dates for next 30 days
+    // Generate all dates for next 60 days
     const allDates = [];
     let currentDate = today;
-    while (currentDate <= thirtyDaysFromNow) {
+    while (currentDate <= sixtyDaysFromNow) {
       allDates.push(format(currentDate, 'yyyy-MM-dd'));
       currentDate = addDays(currentDate, 1);
     }
@@ -93,12 +104,12 @@ router.get('/available', async (req, res) => {
     const availableDates = allDates.filter(date => {
       return !unavailableDates.some(unavailable => {
         if (unavailable.is_range) {
-          const startDate = parseISO(unavailable.date);
-          const endDate = parseISO(unavailable.end_date);
-          const currentDate = parseISO(date);
+          const startDate = new Date(unavailable.date);
+          const endDate = new Date(unavailable.end_date);
+          const currentDate = new Date(date);
           return isWithinInterval(currentDate, { start: startDate, end: endDate });
         }
-        return date === format(parseISO(unavailable.date), 'yyyy-MM-dd');
+        return date === format(new Date(unavailable.date), 'yyyy-MM-dd');
       });
     });
 

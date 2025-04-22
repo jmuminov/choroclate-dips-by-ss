@@ -21,6 +21,7 @@ const UnavailableDates = ({ token }) => {
       const data = await getUnavailableDates();
       setDates(data);
     } catch (error) {
+      console.error('Error fetching unavailable dates:', error);
       setError('Failed to fetch unavailable dates');
     }
   };
@@ -44,6 +45,7 @@ const UnavailableDates = ({ token }) => {
       setNewDate({ date: '', end_date: '', reason: '' });
       fetchDates();
     } catch (error) {
+      console.error('Error adding date:', error);
       setError('Failed to add date');
     }
   };
@@ -54,6 +56,7 @@ const UnavailableDates = ({ token }) => {
       setSuccess('Date deleted successfully');
       fetchDates();
     } catch (error) {
+      console.error('Error deleting date:', error);
       setError('Failed to delete date');
     }
   };

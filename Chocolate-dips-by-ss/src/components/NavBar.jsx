@@ -29,6 +29,11 @@ export default function NavBar() {
             </span>
             {isDropdownOpen && (
               <div className="dropdown-menu">
+                {user.isAdmin && (
+                  <Link to="/admin/unavailable-dates" className="dropdown-item">
+                    Admin Portal
+                  </Link>
+                )}
                 <button onClick={logout} className="dropdown-item">Logout</button>
               </div>
             )}

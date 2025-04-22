@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
-import DatePicker from './DatePicker';
+import { useAuth } from '../context/AuthContext';
+import DatePickerComponent from './DatePicker';
 import OrderSummary from './OrderSummary';
 import PaymentInfo from './PaymentInfo';
 import OrderReview from './OrderReview';
 
 export default function Checkout() {
   const { cartItems, clearCart } = useCart();
+  const { user } = useAuth();
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState(null);
   const [specialRequests, setSpecialRequests] = useState('');
@@ -22,7 +24,6 @@ export default function Checkout() {
 
   const handleDateSelect = (date) => {
     setSelectedDate(date);
-    setStep(2);
   };
 
   const handleSpecialRequestsChange = (e) => {
@@ -39,11 +40,15 @@ export default function Checkout() {
 
   const handlePlaceOrder = async () => {
     try {
+      // Clean up user ID - remove 'guest-' prefix if present
+      const cleanUserId = user ? (user.id.toString().startsWith('guest-') ? null : parseInt(user.id)) : null;
+
       const orderData = {
         items: cartItems,
         selectedDate,
         specialRequests,
-        total: cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+        user_id: cleanUserId,
+        userEmail: user ? user.email : null
       };
 
       const response = await fetch('/api/orders', {
@@ -55,8 +60,9 @@ export default function Checkout() {
       });
 
       if (response.ok) {
+        const data = await response.json();
         clearCart();
-        navigate('/order-confirmation');
+        navigate('/order-confirmation', { state: { orderNumber: data.orderNumber } });
       } else {
         setError('Failed to place order. Please try again.');
       }
@@ -93,7 +99,10 @@ export default function Checkout() {
       {step === 1 && (
         <div className="checkout-step">
           <h2>Select Pickup Date</h2>
-          <DatePicker onSelect={handleDateSelect} />
+          <DatePickerComponent 
+            onSelect={handleDateSelect}
+            onNext={() => setStep(2)}
+          />
         </div>
       )}
 
@@ -101,15 +110,6 @@ export default function Checkout() {
         <div className="checkout-step">
           <h2>Payment Information</h2>
           <PaymentInfo />
-          <div className="form-group">
-            <label htmlFor="special-requests">Special Requests (optional):</label>
-            <textarea
-              id="special-requests"
-              value={specialRequests}
-              onChange={handleSpecialRequestsChange}
-              placeholder="Any special instructions for your order..."
-            />
-          </div>
           <button onClick={handleProceedToReview} className="proceed-button">
             Proceed to Review
           </button>
@@ -120,13 +120,11 @@ export default function Checkout() {
         <div className="checkout-step">
           <h2>Review Your Order</h2>
           <OrderReview
-            items={cartItems}
             selectedDate={selectedDate}
             specialRequests={specialRequests}
+            onSpecialRequestsChange={handleSpecialRequestsChange}
+            onPlaceOrder={handlePlaceOrder}
           />
-          <button onClick={handlePlaceOrder} className="place-order-button">
-            Place Order
-          </button>
         </div>
       )}
     </div>

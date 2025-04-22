@@ -1,101 +1,85 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useCart } from '../context/CartContext';
 
 const PaymentInfo = () => {
-  const [paymentInfo, setPaymentInfo] = useState({
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
-    nameOnCard: ''
-  });
+  const { cartItems } = useCart();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPaymentInfo(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  const calculateTotal = () => {
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const tax = subtotal * 0.08; // 8% tax rate
+    return (subtotal + tax).toFixed(2);
   };
 
-  const formatCardNumber = (value) => {
-    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    const matches = v.match(/\d{4,16}/g);
-    const match = matches && matches[0] || '';
-    const parts = [];
-    for (let i = 0, len = match.length; i < len; i += 4) {
-      parts.push(match.substring(i, i + 4));
-    }
-    if (parts.length) {
-      return parts.join(' ');
-    } else {
-      return value;
-    }
-  };
-
-  const formatExpiryDate = (value) => {
-    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    if (v.length >= 2) {
-      return `${v.substring(0, 2)}/${v.substring(2, 4)}`;
-    }
-    return value;
-  };
+  // Generate QR code URLs (these are example URLs, replace with your actual payment links)
+  const zelleQRCode = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=zelle:yourbusiness@email.com?amount=${calculateTotal()}`;
+  const cashAppQRCode = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=cashapp://yourcashtag?amount=${calculateTotal()}`;
 
   return (
     <div className="payment-info">
-      <h2>Payment Information</h2>
-      <form className="payment-form">
-        <div className="form-group">
-          <label htmlFor="nameOnCard">Name on Card</label>
-          <input
-            type="text"
-            id="nameOnCard"
-            name="nameOnCard"
-            value={paymentInfo.nameOnCard}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="cardNumber">Card Number</label>
-          <input
-            type="text"
-            id="cardNumber"
-            name="cardNumber"
-            value={formatCardNumber(paymentInfo.cardNumber)}
-            onChange={handleChange}
-            maxLength="19"
-            required
-          />
-        </div>
-
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="expiryDate">Expiry Date (MM/YY)</label>
-            <input
-              type="text"
-              id="expiryDate"
-              name="expiryDate"
-              value={formatExpiryDate(paymentInfo.expiryDate)}
-              onChange={handleChange}
-              maxLength="5"
-              required
-            />
+      <div className="payment-methods">
+        <div className="payment-method">
+          <h3>Zelle Payment</h3>
+          <div className="payment-instructions">
+            <p>1. Open your bank's mobile app</p>
+            <p>2. Select "Send Money with Zelle"</p>
+            <p>3. Enter the following details:</p>
+            <div className="payment-details">
+              <p><strong>Email:</strong> yourbusiness@email.com</p>
+              <p><strong>Amount:</strong> ${calculateTotal()}</p>
+            </div>
+            <p>4. Add your order number in the memo field</p>
           </div>
-
-          <div className="form-group">
-            <label htmlFor="cvv">CVV</label>
-            <input
-              type="text"
-              id="cvv"
-              name="cvv"
-              value={paymentInfo.cvv}
-              onChange={handleChange}
-              maxLength="4"
-              required
-            />
+          <div className="qr-code-container">
+            <img src={zelleQRCode} alt="Zelle QR Code" className="qr-code" />
+            <p className="qr-code-label">Scan to pay with Zelle</p>
           </div>
+          <a 
+            href="https://www.zellepay.com/pay" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="payment-button"
+          >
+            Pay with Zelle
+          </a>
         </div>
-      </form>
+
+        <div className="payment-method">
+          <h3>Cash App Payment</h3>
+          <div className="payment-instructions">
+            <p>1. Open Cash App</p>
+            <p>2. Tap the "$" icon</p>
+            <p>3. Enter the following details:</p>
+            <div className="payment-details">
+              <p><strong>Cashtag:</strong> $YourCashAppTag</p>
+              <p><strong>Amount:</strong> ${calculateTotal()}</p>
+            </div>
+            <p>4. Add your order number in the "For" field</p>
+          </div>
+          <div className="qr-code-container">
+            <img src={cashAppQRCode} alt="Cash App QR Code" className="qr-code" />
+            <p className="qr-code-label">Scan to pay with Cash App</p>
+          </div>
+          <a 
+            href="https://cash.app/yourcashtag" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="payment-button"
+          >
+            Pay with Cash App
+          </a>
+        </div>
+      </div>
+
+      <div className="payment-note">
+        <h4>Important Payment Instructions:</h4>
+        <ul>
+          <li>Please complete your payment before proceeding to the next step</li>
+          <li>Include your order number in the payment memo/note</li>
+          <li>Your order will be processed once payment is confirmed</li>
+          <li>Payment confirmation may take up to 24 hours</li>
+          <li>If you encounter any issues, please contact us at support@yourbusiness.com</li>
+        </ul>
+      </div>
     </div>
   );
 };

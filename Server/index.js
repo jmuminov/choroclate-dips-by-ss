@@ -1,8 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { seed } = require("./db/seed");
-const { runMigrations } = require("./db/migrations");
+const { setupDatabase } = require("./db/database");
 
 // Import routes
 const usersRouter = require("./api/users");
@@ -26,10 +25,10 @@ app.use("/api/auth", authRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/unavailable-dates", unavailableDatesRouter);
 
-// Run migrations and start server
+// Setup database and start server
 async function startServer() {
   try {
-    await runMigrations();
+    await setupDatabase();
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);

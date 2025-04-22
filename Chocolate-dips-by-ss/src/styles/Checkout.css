@@ -55,8 +55,59 @@
 }
 
 /* Date Picker Styles */
-.date-picker {
+.date-picker-form {
   margin-top: 2rem;
+}
+
+.date-picker-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: white;
+}
+
+.date-picker-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.react-datepicker {
+  font-family: inherit;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.react-datepicker__header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 0.5rem;
+}
+
+.react-datepicker__day {
+  width: 2rem;
+  line-height: 2rem;
+  margin: 0.2rem;
+  border-radius: 4px;
+}
+
+.react-datepicker__day--selected {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.react-datepicker__day--disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.react-datepicker__day:hover:not(.react-datepicker__day--disabled) {
+  background-color: #f0f0f0;
 }
 
 .calendar {
@@ -134,22 +185,108 @@
 
 .payment-methods {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   margin-top: 1rem;
 }
 
 .payment-method {
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.payment-method h3 {
+  color: #4b2e83;
+  margin-bottom: 1rem;
+}
+
+.payment-instructions {
+  background-color: #f8f9fa;
   padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.payment-instructions p {
+  margin: 0.5rem 0;
+  color: #333;
+}
+
+.payment-details {
+  background-color: white;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+}
+
+.payment-details p {
+  margin: 0.25rem 0;
+}
+
+.qr-code-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.qr-code {
+  width: 150px;
+  height: 150px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  padding: 0.5rem;
+  background-color: white;
+}
+
+.qr-code-label {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.payment-button {
+  display: inline-block;
+  background-color: #4b2e83;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.payment-button:hover {
+  background-color: #ffcc00;
 }
 
 .payment-note {
   margin-top: 2rem;
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: #fff3cd;
   border-radius: 4px;
+  color: #856404;
+}
+
+.payment-note h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #856404;
+}
+
+.payment-note ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.payment-note li {
+  margin-bottom: 0.5rem;
 }
 
 /* Order Review Styles */
@@ -195,6 +332,23 @@
   border-radius: 8px;
 }
 
+.special-requests-input {
+  width: 100%;
+  min-height: 100px;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  resize: vertical;
+  margin-top: 0.5rem;
+}
+
+.special-requests-input:focus {
+  outline: none;
+  border-color: #4b2e83;
+  box-shadow: 0 0 0 2px rgba(75, 46, 131, 0.2);
+}
+
 /* Buttons */
 .proceed-button,
 .place-order-button {
@@ -216,11 +370,143 @@
   background-color: #45a049;
 }
 
+/* Error Container */
+.error-container {
+  margin: 10px 0;
+  min-height: 40px;
+}
+
 /* Error Message */
 .error-message {
-  padding: 1rem;
-  background-color: #ffebee;
-  color: #c62828;
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  margin: 10px 0;
   border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  display: block;
+  width: 100%;
+  z-index: 10;
+  position: relative;
+}
+
+.add-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  width: auto;
+  min-width: 120px;
+  display: inline-block;
+}
+
+.add-button:hover:not(.disabled) {
+  background-color: #45a049;
+}
+
+.add-button.disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.add-button.disabled:hover {
+  background-color: #cccccc;
+}
+
+/* Tooltip styles */
+.add-button[title] {
+  position: relative;
+}
+
+.add-button[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  background-color: #333;
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  margin-bottom: 5px;
+}
+
+/* Login Prompt Styles */
+.login-prompt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.login-prompt {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.login-prompt h3 {
+  color: #4b2e83;
   margin-bottom: 1rem;
+}
+
+.login-prompt p {
+  margin-bottom: 1.5rem;
+  color: #666;
+}
+
+.login-prompt-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.login-button {
+  background-color: #4b2e83;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #3a1d6b;
+}
+
+.cancel-button {
+  background-color: #f5f5f5;
+  color: #666;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: #e5e5e5;
 } 

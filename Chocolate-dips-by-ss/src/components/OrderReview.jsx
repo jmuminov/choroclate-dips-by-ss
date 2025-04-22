@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-const OrderReview = ({ selectedDate, selectedTime, specialRequests }) => {
+const OrderReview = ({ selectedDate, specialRequests, onSpecialRequestsChange, onPlaceOrder }) => {
   const { cartItems } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   const calculateSubtotal = () => {
     return cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -16,15 +21,41 @@ const OrderReview = ({ selectedDate, selectedTime, specialRequests }) => {
     return calculateSubtotal() + calculateTax();
   };
 
+  const handlePlaceOrder = () => {
+    if (!user) {
+      setShowLoginPrompt(true);
+      return;
+    }
+    onPlaceOrder();
+  };
+
+  const handleLoginRedirect = () => {
+    navigate('/login', { state: { from: '/checkout' } });
+  };
+
   return (
     <div className="order-review">
-      <h2>Review Your Order</h2>
-      
+      {showLoginPrompt && (
+        <div className="login-prompt-overlay">
+          <div className="login-prompt">
+            <h3>Login Required</h3>
+            <p>Please login or create an account to place your order.</p>
+            <div className="login-prompt-buttons">
+              <button onClick={handleLoginRedirect} className="login-button">
+                Login / Create Account
+              </button>
+              <button onClick={() => setShowLoginPrompt(false)} className="cancel-button">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="review-section">
         <h3>Pickup Details</h3>
         <div className="pickup-info">
-          <p><strong>Date:</strong> {new Date(selectedDate).toLocaleDateString()}</p>
-          <p><strong>Time:</strong> {selectedTime}</p>
+          <p><strong>Date:</strong> {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { timeZone: 'UTC' })}</p>
         </div>
       </div>
 
@@ -45,12 +76,18 @@ const OrderReview = ({ selectedDate, selectedTime, specialRequests }) => {
         </div>
       </div>
 
-      {specialRequests && (
-        <div className="review-section">
-          <h3>Special Requests</h3>
-          <p className="special-requests">{specialRequests}</p>
+      <div className="review-section">
+        <h3>Special Requests</h3>
+        <div className="form-group">
+          <textarea
+            id="special-requests"
+            value={specialRequests}
+            onChange={onSpecialRequestsChange}
+            placeholder="Any special instructions for your order..."
+            className="special-requests-input"
+          />
         </div>
-      )}
+      </div>
 
       <div className="review-section">
         <h3>Order Total</h3>
@@ -69,6 +106,10 @@ const OrderReview = ({ selectedDate, selectedTime, specialRequests }) => {
           </div>
         </div>
       </div>
+
+      <button onClick={handlePlaceOrder} className="place-order-button">
+        Place Order
+      </button>
     </div>
   );
 };
