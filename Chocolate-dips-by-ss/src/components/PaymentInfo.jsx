@@ -11,8 +11,8 @@ const PaymentInfo = () => {
   };
 
   // Generate QR code URLs (these are example URLs, replace with your actual payment links)
-  const zelleQRCode = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=zelle:yourbusiness@email.com?amount=${calculateTotal()}`;
-  const cashAppQRCode = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=cashapp://yourcashtag?amount=${calculateTotal()}`;
+  const zelleQRCode = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=zelle:jmuminov92@gmail.com?amount=${calculateTotal()}`;
+  const cashAppQRCode = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=cashapp://jmuminov?amount=${calculateTotal()}`;
 
   return (
     <div className="payment-info">
@@ -24,7 +24,7 @@ const PaymentInfo = () => {
             <p>2. Select "Send Money with Zelle"</p>
             <p>3. Enter the following details:</p>
             <div className="payment-details">
-              <p><strong>Email:</strong> yourbusiness@email.com</p>
+              <p><strong>Email:</strong>jmuminov92@gmail.com</p>
               <p><strong>Amount:</strong> ${calculateTotal()}</p>
             </div>
             <p>4. Add your order number in the memo field</p>
@@ -50,7 +50,7 @@ const PaymentInfo = () => {
             <p>2. Tap the "$" icon</p>
             <p>3. Enter the following details:</p>
             <div className="payment-details">
-              <p><strong>Cashtag:</strong> $YourCashAppTag</p>
+              <p><strong>Cashtag:</strong> $jmuminov</p>
               <p><strong>Amount:</strong> ${calculateTotal()}</p>
             </div>
             <p>4. Add your order number in the "For" field</p>
