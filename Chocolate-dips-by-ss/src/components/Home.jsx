@@ -5,10 +5,10 @@ export default function Home() {
 
   // Example Instagram images
   const instagramImages = [
-    "./images/instagram1.jpg",
-    "./images/instagram2.jpg",
-    "./images/instagram3.jpg",
-    "./images/instagram4.jpg",
+    "./src/images/instagram1.jpg",
+    "./src/images/instagram2.jpg",
+    "./src/images/instagram3.jpg",
+    "./src/images/instagram4.jpg",
   ];
 
   // Custom arrow components

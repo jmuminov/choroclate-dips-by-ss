@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:3000/api/unavailable-dates';
+// const API_URL = 'http://localhost:3000/api/unavailable-dates';
+const API_URL = 'https://choroclate-dips-by-ss.onrender.com/api/unavailable-dates';
 
 export const getUnavailableDates = async () => {
   try {

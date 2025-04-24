@@ -23,7 +23,7 @@ export default function Contact() {
     setStatus({ type: '', message: '' });
 
     try {
-      const response = await fetch('http://localhost:3000/api/contact', {
+      const response = await fetch('https://choroclate-dips-by-ss.onrender.com/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ export default function Contact() {
           <p>You can also reach us at Instagram:</p>
           <a href="https://www.instagram.com/chocolate_dipsby_ss" target="_blank" rel="noopener noreferrer">
             <img
-              src="./images/instagram-logo.png"
+              src="./src/images/instagram-logo.png"
               alt="Instagram"
               className="instagram-logo"
             />

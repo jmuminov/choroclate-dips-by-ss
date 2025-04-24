@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const API_URL = 'https://choroclate-dips-by-ss.onrender.com';
-//const API_ULR =  'http://localhost:3000';
+//const API_URL =  'http://localhost:3000';
 
 export const AuthContext = createContext(null);
 
