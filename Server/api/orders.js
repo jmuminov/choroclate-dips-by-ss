@@ -2,7 +2,7 @@ const router = require("express").Router();
 const db = require("../db");
 const { generateOrderNumber } = require("../utils/orderUtils");
 const nodemailer = require('nodemailer');
-require('dotenv').config({ path: '../../.env' });
+require('dotenv').config({ path: './.env' });
 
 // Log email configuration (without exposing sensitive data)
 console.log('Email Configuration:', {

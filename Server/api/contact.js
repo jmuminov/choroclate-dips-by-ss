@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
-require('dotenv').config({ path: '../../.env' });
+require('dotenv').config({ path: './.env' });
 
 // Log email configuration (without exposing sensitive data)
 console.log('Email Configuration:', {

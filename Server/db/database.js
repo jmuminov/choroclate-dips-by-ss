@@ -24,7 +24,7 @@ async function setupDatabase() {
     console.log("Starting database setup...");
 
     // Drop all existing tables first
-    // await dropAllTables();
+    await dropAllTables();
 
     // Create tables if they don't exist
     await query(`
