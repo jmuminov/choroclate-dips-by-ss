@@ -87,7 +87,7 @@ async function setupDatabase() {
     if (productsCount.rows[0].count === '0') {
       await query(`
         INSERT INTO products (name, price, description, image) VALUES
-        ('Chocolate Strawberry', 5.99, 'Fresh strawberries dipped in chocolate', 'https://scontent-iad3-1.cdninstagram.com/v/t51.2885-15/479514927_17893961478161720_7401539195863832666_n.jpg?stp=dst-jpegr_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQuaW1hZ2VfdXJsZ2VuLjE0NDB4MTgwMC5oZHIuZjc1NzYxLmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QEe--D9K8SDgkIPY2j8OqyYtyqc19jniFn32yq-Gy2MYySFwjTgF4ouf_1fV7qo_c8&_nc_ohc=dXfTrmH1ongQ7kNvwEeB-tR&_nc_gid=I-GGJn31pZ9oSpnsfPkM0w&edm=APoiHPcBAAAA&ccb=7-5&ig_cache_key=MzU2NTY0MDE4NDk0OTYwNTc3OQ%3D%3D.3-ccb7-5&oh=00_AfEStt5RxRVZnX65GW8N9wqrHPOTfdkq4MT8aiLbQ1EqCw&oe=6810A925&_nc_sid=22de04'),
+        ('Chocolate Strawberry', 5.99, 'Fresh strawberries dipped in chocolate', 'https://i.imgur.com/wxbgyED.jpeg'),
         ('Chocolate Banana', 4.99, 'Banana slices covered in chocolate', 'https://www.onelovelylife.com/wp-content/uploads/2016/07/Chocolate-Covered-Bananas10.jpg'),
         ('Chocolate Pretzel', 3.99, 'Crunchy pretzels dipped in chocolate', 'https://sugarspunrun.com/wp-content/uploads/2023/11/Chocolate-covered-Pretzels-1-of-1.jpg'),
         ('Chocolate Marshmallow', 2.99, 'Fluffy marshmallows covered in chocolate', 'https://www.allrecipes.com/thmb/BKWy4xif2Lm-lYyBlBc0DS9ZcL0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/7414662-d204fe177edd4ae8aa70bad0806422bd.jpg');
