@@ -117,7 +117,7 @@ export default function Contact() {
           <p>You can also reach us at Instagram:</p>
           <a href="https://www.instagram.com/chocolate_dipsby_ss" target="_blank" rel="noopener noreferrer">
             <img
-              src="./src/images/instagram-logo.png"
+              src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
               alt="Instagram"
               className="instagram-logo"
             />
