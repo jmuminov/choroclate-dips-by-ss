@@ -7,6 +7,8 @@ import OrderSummary from './OrderSummary';
 import PaymentInfo from './PaymentInfo';
 import OrderReview from './OrderReview';
 
+const API_URL = 'https://choroclate-dips-by-ss.onrender.com';
+
 export default function Checkout() {
   const { cartItems, clearCart } = useCart();
   const { user } = useAuth();
@@ -51,7 +53,7 @@ export default function Checkout() {
         userEmail: user ? user.email : null
       };
 
-      const response = await fetch('/api/orders', {
+      const response = await fetch(`${API_URL}/api/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

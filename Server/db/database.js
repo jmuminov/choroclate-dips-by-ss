@@ -90,7 +90,7 @@ async function setupDatabase() {
         ('Chocolate Strawberry', 5.99, 'Fresh strawberries dipped in chocolate', './src/images/strawberry.jpg'),
         ('Chocolate Banana', 4.99, 'Banana slices covered in chocolate', './src/images/banana.jpg'),
         ('Chocolate Pretzel', 3.99, 'Crunchy pretzels dipped in chocolate', './src/images/pretzel.jpg'),
-        ('Chocolate Marshmallow', 2.99, 'Fluffy marshmallows covered in chocolate', './src/images/marshmallow.jpg');
+        ('Chocolate Marshmallow', 2.99, 'Fluffy marshmallows covered in chocolate', 'https://www.allrecipes.com/thmb/BKWy4xif2Lm-lYyBlBc0DS9ZcL0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/7414662-d204fe177edd4ae8aa70bad0806422bd.jpg');
       `);
       console.log("Sample products added");
     }

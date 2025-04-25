@@ -4,6 +4,8 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import '../styles/AdminUnavailableDates.css';
 
+const API_URL = 'https://choroclate-dips-by-ss.onrender.com';
+
 export default function AdminUnavailableDates() {
   const [dates, setDates] = useState([]);
   const [startDate, setStartDate] = useState(null);
@@ -19,7 +21,7 @@ export default function AdminUnavailableDates() {
 
   const fetchUnavailableDates = async () => {
     try {
-      const response = await fetch('/api/unavailable-dates');
+      const response = await fetch(`${API_URL}/api/unavailable-dates`);
       if (response.ok) {
         const data = await response.json();
         setDates(data);
@@ -47,7 +49,7 @@ export default function AdminUnavailableDates() {
     }
 
     try {
-      const response = await fetch('/api/unavailable-dates', {
+      const response = await fetch(`${API_URL}/api/unavailable-dates`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +83,7 @@ export default function AdminUnavailableDates() {
 
   const handleDeleteDate = async (id) => {
     try {
-      const response = await fetch(`/api/unavailable-dates/${id}`, {
+      const response = await fetch(`${API_URL}/api/unavailable-dates/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`

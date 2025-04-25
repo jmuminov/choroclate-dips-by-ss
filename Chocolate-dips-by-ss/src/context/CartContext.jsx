@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import { getGuestCart, saveGuestCart, clearGuestCart } from '../utils/guestCart';
 
+const API_URL = 'https://choroclate-dips-by-ss.onrender.com';
+
 export const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
@@ -24,7 +26,7 @@ export function CartProvider({ children }) {
   const fetchCartItems = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`/api/cart/${user.id}`, {
+      const response = await fetch(`${API_URL}/api/cart/${user.id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -36,7 +38,7 @@ export function CartProvider({ children }) {
         // Fetch product details for each cart item
         const cartItemsWithProducts = await Promise.all(
           cartData.map(async (item) => {
-            const productResponse = await fetch(`/api/products/${item.product_id}`, {
+            const productResponse = await fetch(`${API_URL}/api/products/${item.product_id}`, {
               headers: {
                 'Authorization': `Bearer ${token}`
               }
@@ -77,7 +79,7 @@ export function CartProvider({ children }) {
       if (user) {
         // Add to user's cart in database
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/cart', {
+        const response = await fetch(`${API_URL}/api/cart`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -94,7 +96,7 @@ export function CartProvider({ children }) {
           const newItem = await response.json();
           
           // Fetch product details for the new cart item
-          const productResponse = await fetch(`/api/products/${productId}`, {
+          const productResponse = await fetch(`${API_URL}/api/products/${productId}`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -115,7 +117,7 @@ export function CartProvider({ children }) {
         }
       } else {
         // Add to guest cart
-        const productResponse = await fetch(`/api/products/${productId}`);
+        const productResponse = await fetch(`${API_URL}/api/products/${productId}`);
         if (productResponse.ok) {
           const product = await productResponse.json();
           const newItem = {
@@ -144,7 +146,7 @@ export function CartProvider({ children }) {
       if (user) {
         // Update user's cart in database
         const token = localStorage.getItem('token');
-        const response = await fetch(`/api/cart/${cartItemId}`, {
+        const response = await fetch(`${API_URL}/api/cart/${cartItemId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -188,7 +190,7 @@ export function CartProvider({ children }) {
       if (user) {
         // Remove from user's cart in database
         const token = localStorage.getItem('token');
-        const response = await fetch(`/api/cart/${cartItemId}`, {
+        const response = await fetch(`${API_URL}/api/cart/${cartItemId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -231,7 +233,7 @@ export function CartProvider({ children }) {
       
       // Add each guest cart item to the user's cart
       for (const item of guestCart) {
-        await fetch('/api/cart', {
+        await fetch(`${API_URL}/api/cart`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

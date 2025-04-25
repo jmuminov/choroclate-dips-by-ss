@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import '../styles/Menu.css';
 
+const API_URL = 'https://choroclate-dips-by-ss.onrender.com';
+
 function Menu() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +19,7 @@ function Menu() {
     try {
       const token = localStorage.getItem('token');
       console.log('Fetching products...');
-      const response = await fetch('/api/products', {
+      const response = await fetch(`${API_URL}/api/products`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

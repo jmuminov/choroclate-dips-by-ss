@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+const API_URL = 'https://choroclate-dips-by-ss.onrender.com';
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
@@ -23,7 +25,7 @@ export default function Contact() {
     setStatus({ type: '', message: '' });
 
     try {
-      const response = await fetch('https://choroclate-dips-by-ss.onrender.com/api/contact', {
+      const response = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
